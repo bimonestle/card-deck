@@ -3,6 +3,7 @@ package deck
 
 import (
 	"fmt"
+	"sort"
 )
 
 type Suit uint8
@@ -58,7 +59,7 @@ func (c Card) String() string {
 }
 
 // Create a new deck of cards or shuffle(?)
-func New() []Card {
+func New(opts ...func([]Card) []Card) []Card {
 	var cards []Card
 	// for each suit
 	for _, suit := range suits {
@@ -68,5 +69,26 @@ func New() []Card {
 			cards = append(cards, Card{Suit: suit, Rank: rank})
 		}
 	}
+	for _, opt := range opts {
+		cards = opt(cards)
+	}
 	return cards
+}
+
+// Sort the cards from the smallest
+func DefaultSort(cards []Card) []Card {
+	sort.Slice(cards, Less(cards))
+	return cards
+}
+
+// Check whether the first card is less than second one
+func Less(cards []Card) func(i, j int) bool {
+	return func(i, j int) bool {
+		return absRank(cards[i]) < absRank(cards[j])
+	}
+}
+
+// Get the absolute rank
+func absRank(c Card) int {
+	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }
