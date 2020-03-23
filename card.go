@@ -81,6 +81,13 @@ func DefaultSort(cards []Card) []Card {
 	return cards
 }
 
+func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		sort.Slice(cards, less(cards))
+		return cards
+	}
+}
+
 // Check whether the first card is less than second one
 func Less(cards []Card) func(i, j int) bool {
 	return func(i, j int) bool {
@@ -88,7 +95,7 @@ func Less(cards []Card) func(i, j int) bool {
 	}
 }
 
-// Get the absolute rank
+// Get the absolute rank of a single card
 func absRank(c Card) int {
 	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }
