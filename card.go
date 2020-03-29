@@ -3,7 +3,9 @@ package deck
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
+	"time"
 )
 
 type Suit uint8
@@ -98,4 +100,20 @@ func Less(cards []Card) func(i, j int) bool {
 // Get the absolute rank of a single card
 func absRank(c Card) int {
 	return int(c.Suit)*int(maxRank) + int(c.Rank)
+}
+
+// Figure out what the new order of the cards should be
+func Shuffle(cards []Card) []Card {
+	ret := make([]Card, len(cards))
+
+	// Random source of numbers based on time
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+
+	// it will have all the numbers between 0 & that particular number
+	perm := r.Perm(len(cards))
+	for i, j := range perm {
+		// j is the value of the inside of a permutation
+		ret[i] = cards[j]
+	}
+	return ret
 }
