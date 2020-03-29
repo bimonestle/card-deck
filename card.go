@@ -117,3 +117,18 @@ func Shuffle(cards []Card) []Card {
 	}
 	return ret
 }
+
+// Passing the amount of jokers into your deck. It returns
+func Jokers(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		for i := 0; i < n; i++ {
+			cards = append(cards, Card{
+				// Every single Joker that we just added,
+				// will have different value for the rank
+				Rank: Rank(i),
+				Suit: Joker,
+			})
+		}
+		return cards
+	}
+}
