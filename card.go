@@ -132,3 +132,16 @@ func Jokers(n int) func([]Card) []Card {
 		return cards
 	}
 }
+
+// Passing which cards that you want to be sorted out / filtered
+func Filter(f func(card Card) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for _, c := range cards {
+			if !f(c) {
+				ret = append(ret, c)
+			}
+		}
+		return ret
+	}
+}
