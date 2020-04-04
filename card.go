@@ -118,7 +118,7 @@ func Shuffle(cards []Card) []Card {
 	return ret
 }
 
-// Passing the amount of jokers into your deck. It returns
+// Passing the amount of jokers into your deck. It returns a slice of cards
 func Jokers(n int) func([]Card) []Card {
 	return func(cards []Card) []Card {
 		for i := 0; i < n; i++ {
@@ -141,6 +141,20 @@ func Filter(f func(card Card) bool) func([]Card) []Card {
 			if !f(c) {
 				ret = append(ret, c)
 			}
+		}
+		return ret
+	}
+}
+
+// Generating a new deck of cards
+// How many deck of cards do you want to have?
+// Or simply how many cards do you want to have?
+// If it's Deck(2), you'll have 104 cards. Because it is 13 ranks * 4 suits * 2 decks
+func Deck(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for i := 0; i < n; i++ {
+			ret = append(ret, cards...)
 		}
 		return ret
 	}
